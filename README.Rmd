@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 ###  On Uvular Consonants in Languages of the Caucasus {.tabset .tabset-fade .tabset-pills}
@@ -21,9 +21,9 @@ uvular <- read.csv("uvular_database.csv", stringsAsFactors = F, quote = "\"")
 uvular$popup <- sapply(uvular$language, function(x){
   paste(uvular[uvular$language == x, 2], collapse = ", ")
 })
-uvular$uvular_number <- sapply(uvular$language, function(x){
+uvular$uvular_number <- factor(sapply(uvular$language, function(x){
   length(uvular[uvular$language == x, 2])
-})
+}))
 library(lingtypology)
 map.feature(uvular$language, control = F, tile = "CartoDB.Positron", popup = uvular$popup)
 ```
@@ -31,11 +31,34 @@ map.feature(uvular$language, control = F, tile = "CartoDB.Positron", popup = uvu
 #### search
 ```{r}
 library(DT)
-datatable(uvular[,-c(3, 5, 6)], filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
+datatable(uvular[,-c(3, 4, 5, 6)], filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
 ```
 
 #### summary
 ```{r}
 library(DT)
-datatable(unique(uvular[,-c(2, 4, 5)]), filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
+datatable(unique(uvular[,-c(2, 4, 5, 6)]), filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
 ```
+
+#### graphs
+```{r}
+library(tidyverse)
+my.data <- unique(uvular[,c(1, 5, 7)])
+my.data2 <- unique(uvular[,c(1, 7)])
+my.data %>%
+  ggplot(aes(uvular_number, fill = family))+
+  geom_bar(data = my.data2, fill = "lightgrey")+
+  geom_bar()+
+  xlab("number of uvulars")+
+  ylab("number of languages")+
+  theme_bw()+
+  facet_wrap(~family, scales = "free")+
+  guides(fill=FALSE)+
+  labs(title = "Number of uvulars by branch")
+  
+```
+```{r}
+sort(table(uvular$uvular), decreasing = T)
+```
+
+
