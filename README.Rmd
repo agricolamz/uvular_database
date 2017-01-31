@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ###  On Uvular Consonants in Languages of the Caucasus {.tabset .tabset-fade .tabset-pills}
 Authors: S. Martynova, G. Moroz
 
-Here is an [abstract](https://www.overleaf.com/7958421gcxnsztnxdqn). Download database: [.csv]()
+Here is an [abstract](https://www.overleaf.com/7958421gcxnsztnxdqn). Download database: [.csv](https://raw.githubusercontent.com/agricolamz/uvular_database/master/uvular_database.csv)
 
 #### about database
 Here is a map of the languages from database:
