@@ -21,6 +21,9 @@ uvular <- read.csv("uvular_database.csv", stringsAsFactors = F, quote = "\"")
 uvular$popup <- sapply(uvular$language, function(x){
   paste(uvular[uvular$language == x, 2], collapse = ", ")
 })
+uvular$uvular_number <- sapply(uvular$language, function(x){
+  length(uvular[uvular$language == x, 2])
+})
 library(lingtypology)
 map.feature(uvular$language, control = F, tile = "CartoDB.Positron", popup = uvular$popup)
 ```
@@ -28,11 +31,11 @@ map.feature(uvular$language, control = F, tile = "CartoDB.Positron", popup = uvu
 #### search
 ```{r}
 library(DT)
-datatable(uvular[,-c(3, 5)], filter = 'top', rownames = FALSE, options = list(pageLength = 20, dom = 'tip'), escape = FALSE)
+datatable(uvular[,-c(3, 5, 6)], filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
 ```
 
-#### bibliography
+#### summary
 ```{r}
 library(DT)
-datatable(unique(uvular[,-c(2, 4, 5)]), filter = 'top', rownames = FALSE, options = list(pageLength = 20, autoWidth = FALSE), escape = FALSE)
+datatable(unique(uvular[,-c(2, 4, 5)]), filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
 ```
