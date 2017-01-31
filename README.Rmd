@@ -17,6 +17,7 @@ Here is a map of the languages from database:
 ```{r}
 setwd("/home/agricolamz/_DATA/OneDrive1/_Work/Abstracts/2017 I 17.04.15-19 Uvulars Paris")
 uvular <- read.csv("uvular_database.csv")
+# install.packages("devtools"); devtools::install_github("agricolamz/lingtypology", dependencies = TRUE)
 library(lingtypology)
 map.feature(unique(uvular$language), control = F)
 ```
