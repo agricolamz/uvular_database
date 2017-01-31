@@ -1,0 +1,34 @@
+---
+author: "G. Moroz, S. Martynova"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+###  On Uvular Consonants in Languages of the Caucasus {.tabset .tabset-fade .tabset-pills}
+Authors: S. Martynova, G. Moroz
+
+Here is an [abstract](https://www.overleaf.com/7958421gcxnsztnxdqn). Download database: [.csv]()
+
+#### about database
+Here is a map of the languages from database:
+```{r}
+setwd("/home/agricolamz/_DATA/OneDrive1/_Work/Abstracts/2017 I 17.04.15-19 Uvulars Paris")
+uvular <- read.csv("uvular_database.csv")
+library(lingtypology)
+map.feature(unique(uvular$language), control = F)
+```
+
+#### search
+```{r}
+library(DT)
+datatable(uvular[,-3], filter = 'top', rownames = FALSE, options = list(pageLength = 20, dom = 'tip'), escape = FALSE)
+```
+
+#### bibliography
+```{r}
+library(DT)
+datatable(uvular[,-2], filter = 'top', rownames = FALSE, options = list(pageLength = 20, autoWidth = FALSE), escape = FALSE)
+```
