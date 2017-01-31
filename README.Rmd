@@ -19,7 +19,7 @@ setwd("/home/agricolamz/_DATA/OneDrive1/_Work/Abstracts/2017 I 17.04.15-19 Uvula
 uvular <- read.csv("uvular_database.csv")
 # install.packages("devtools"); devtools::install_github("agricolamz/lingtypology", dependencies = TRUE)
 library(lingtypology)
-map.feature(unique(uvular$language), control = F)
+map.feature(unique(uvular$language), control = F, tile = "CartoDB.Positron")
 ```
 
 #### search
@@ -31,5 +31,5 @@ datatable(uvular[,-3], filter = 'top', rownames = FALSE, options = list(pageLeng
 #### bibliography
 ```{r}
 library(DT)
-datatable(uvular[,-2], filter = 'top', rownames = FALSE, options = list(pageLength = 20, autoWidth = FALSE), escape = FALSE)
+datatable(uvular[,-c(2, 4)], filter = 'top', rownames = FALSE, options = list(pageLength = 20, autoWidth = FALSE), escape = FALSE)
 ```
