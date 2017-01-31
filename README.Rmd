@@ -62,4 +62,34 @@ my.data %>%
 sort(table(uvular$uvular), decreasing = T)
 ```
 
+#### coocure
+```{r, message=FALSE, warning=FALSE}
+# create all possible сombinations
+all.combination <- expand.grid(uvular$uvular, uvular$uvular, stringsAsFactors = F)
+# delete duplicates
+all.combination <- all.combination[all.combination[,1] != all.combination[,2],]
+
+all.combination$combo <- mapply(function(pattern_1, pattern_2){
+  paste0(sort(c(pattern_1, pattern_2)), collapse = "")},
+  all.combination[,1], all.combination[,2])
+
+all.combination <- all.combination[!duplicated(all.combination$combo),]
+all.combination <- all.combination[,-3]
+
+pattern_and_pattern <- function(pattern_1, pattern_2){
+    grepl(pattern_1, uvular[uvular$language == langs,6][1])&
+          grepl(pattern_2, uvular[uvular$language == langs,6][1])}
+
+all.combination.copy <- all.combination
+sapply(1:39, function(x){
+  langs <<- unique(uvular$language)[x]
+  mapply(function(pattern_1, pattern_2){
+    pattern_and_pattern(pattern_1, pattern_2)},
+    all.combination[,1], all.combination[,2]) ->> all.combination.copy[,2+x]}) -> df
+
+all.combination$sum <-  apply(all.combination.copy[,c(3:41)], 1, sum)
+names(all.combination) <- c("segment 1", "segment 2", "number of languages")
+library(DT)
+datatable(all.combination, filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
+```
 
