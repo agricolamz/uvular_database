@@ -51,6 +51,7 @@ my.data %>%
   geom_bar()+
   xlab("number of uvulars")+
   ylab("number of languages")+
+  scale_y_continuous(breaks = 1:5*2) +
   theme_bw()+
   facet_wrap(~family, scales = "free")+
   guides(fill=FALSE)+
