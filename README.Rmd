@@ -15,6 +15,7 @@ Here is an [abstract](https://www.overleaf.com/7958421gcxnsztnxdqn). Download da
 #### about database
 Here is a map of the languages from database:
 ```{r}
+library(tidyverse)
 setwd("/home/agricolamz/_DATA/OneDrive1/_Work/Abstracts/2017 I 17.04.15-19 Uvulars Paris")
 uvular <- read.csv("uvular_database.csv", stringsAsFactors = F, quote = "\"")
 # install.packages("devtools"); devtools::install_github("agricolamz/lingtypology", dependencies = TRUE)
@@ -24,8 +25,15 @@ uvular$popup <- sapply(uvular$language, function(x){
 uvular$uvular_number <- factor(sapply(uvular$language, function(x){
   length(uvular[uvular$language == x, 2])
 }))
+
+uvular$type <- "small (<4)"
+uvular[as.integer(uvular$uvular_number) > 7, 8] <- "large (>7)"
+uvular[as.integer(uvular$uvular_number) < 8 & as.integer(uvular$uvular_number) > 3, 8] <- "average"
+uvular$type <- factor(uvular$type, levels = c("small (<4)", "average", "large (>7)"))
+
+
 library(lingtypology)
-map.feature(uvular$language, control = F, tile = "CartoDB.Positron", popup = uvular$popup)
+map.feature(unique(uvular[,-2])$language, control = F, tile = "CartoDB.Positron", popup = unique(uvular[,-2])$popup, features = unique(uvular[,-2])$type)
 ```
 
 #### search
@@ -55,7 +63,8 @@ my.data %>%
   theme_bw()+
   facet_wrap(~family, scales = "free")+
   guides(fill=FALSE)+
-  labs(title = "Number of uvulars by branch")
+  labs(title = "Number of uvulars by branch",
+       subtitle = "All together shadow is colored in grey")
   
 ```
 ```{r}
@@ -89,7 +98,20 @@ sapply(1:39, function(x){
 
 all.combination$sum <-  apply(all.combination.copy[,c(3:41)], 1, sum)
 names(all.combination) <- c("segment 1", "segment 2", "number of languages")
+
+combination <- all.combination[complete.cases(all.combination$`number of languages`),]
+
+combination <- combination[as.integer(combination$`number of languages`) > 0,]
+
 library(DT)
-datatable(all.combination, filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
+datatable(combination, filter = 'top', rownames = FALSE, options = list(pageLength = 30, dom = 'tip'), escape = FALSE)
+
+# combination %>% 
+#   arrange(desc(`number of languages`)) %>% 
+#   spread(`segment 2`, `number of languages`) ->
+#   combination
+# 
+# write.csv(combination, "combinations.csv", row.names = F)
+
 ```
 
